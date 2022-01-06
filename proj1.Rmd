@@ -1,0 +1,84 @@
+```{r setoptions, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+options(scipen = 999)
+```
+
+# Exploring Fitness
+
+In the following report, I run a quick exploratory analysis of the fitness data.
+I will be using the Tidyverse package for plotting and manipulating the data.
+
+``` {r load, results="hide", message=FALSE}
+library(tidyverse)
+t1<-read.csv("activity.csv")
+```
+
+## Part 1: Mean, Median, Histogram 
+
+``` {r Part1}
+sum(t1$steps, na.rm = T)
+smry<-tapply(t1$steps, t1$date, sum, na.rm=TRUE)
+mean(smry, na.rm=TRUE)
+median(smry, na.rm=TRUE)
+smrytbl<-as.data.frame(smry)
+smrytbl %>% ggplot(aes(smry)) + geom_histogram(bins=20)
+```
+
+Excluding the NA values:
+
+- the total number of steps is `r sum(t1$steps, na.rm = T)`. 
+- the  mean number of steps per day is `r mean(smry, na.rm=TRUE)`. 
+- the median number of steps per day is `r median(smry, na.rm=TRUE)`
+
+## Part 2: Time Series For Average Interval
+
+``` {r Part2}
+tsplot<-t1 %>% group_by(interval) %>% summarise(mean=mean(steps,na.rm = T)) 
+tsplot %>% ggplot(aes(interval, mean))+geom_line()
+tsplot$interval[which.max(tsplot$mean)]
+```
+
+The time series plot shows a clear spike after 800, and the busiest interval is 835, 
+with around `r round(tsplot$mean[which.max(tsplot$mean)])` steps.
+
+## Part 3: Replacing NA Values
+
+To replace NA values, I merged the table containing average values per interval with the original table, and replaced all NA values with the corresponding interval average.
+
+```{r Part3}
+sum(is.na(t1$steps))
+t2<-(merge(tsplot, t1))
+t2<-t2[order(t2$date), ]
+t2$steps[is.na(t2$steps)]<-t2$mean[is.na(t2$steps)]
+
+smry2<-tapply(t2$steps, t2$date, sum)
+mean(smry2)
+median(smry2)
+smrytbl2<-as.data.frame(smry2)
+smrytbl2 %>% ggplot(aes(smry2)) + geom_histogram(bins=20)
+```
+
+There are `r sum(is.na(t1$steps))` NA values.
+
+After replacing the NA values:
+
+- the total number of steps is `r round(sum(t2$steps))`. 
+- the  mean number of steps per day is about `r round(mean(smry2))`. 
+- the median number of steps per day is `r (median(smry2))`.
+
+
+## Part 4: Weekday vs Weekend
+
+In this part, I create a factor variable for the weekdays and weekends, and then use ggplot2 to create panel plots, faceting on the factor variable.
+
+```{r Part4}
+t3<-t2
+t3$date<-as.Date(t3$date)
+t3$weekdays<-weekdays(t3$date)
+t3$ends<-factor(t3$weekdays)
+levels(t3$ends)<-c("Weekday", "Weekday", "Weekend", "Weekend", "Weekday", "Weekday", "Weekday")
+
+t3plot<-t3 %>% group_by(interval, ends)%>%summarise(mean=mean(steps))
+t3plot %>% ggplot(aes(interval, mean))+geom_line()+facet_wrap(~ends)
+
+```
