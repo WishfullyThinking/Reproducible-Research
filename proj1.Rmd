@@ -1,9 +1,15 @@
+---
+title: "Exploring Fitness"
+output: html_document
+---
+
+
 ```{r setoptions, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 options(scipen = 999)
 ```
 
-# Exploring Fitness
+## Introduction
 
 In the following report, I run a quick exploratory analysis of the fitness data.
 I will be using the Tidyverse package for plotting and manipulating the data.
