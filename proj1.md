@@ -58,7 +58,7 @@ Excluding the NA values:
 
 - the total number of steps is 570608. 
 - the  mean number of steps per day is 9354.2295082. 
-- the median number of steps per day is 10395
+- the median number of steps per day is 10395.
 
 ## Part 2: Time Series For Average Interval
 
