@@ -36,7 +36,7 @@ Excluding the NA values:
 
 - the total number of steps is `r sum(t1$steps, na.rm = T)`. 
 - the  mean number of steps per day is `r mean(smry, na.rm=TRUE)`. 
-- the median number of steps per day is `r median(smry, na.rm=TRUE)`
+- the median number of steps per day is `r median(smry, na.rm=TRUE)`.
 
 ## Part 2: Time Series For Average Interval
 
