@@ -1,8 +1,10 @@
 ---
 title: "Exploring Fitness"
+
 output: 
   html_document:
     keep_md: true
+
 ---
 
 
@@ -129,6 +131,8 @@ After replacing the NA values:
 - the total number of steps is 656738. 
 - the  mean number of steps per day is about 10766. 
 - the median number of steps per day is 10766.1886792.
+
+Of course, the mean and median values increased after imputing the estimates to the NA values.
 
 
 ## Part 4: Weekday vs Weekend

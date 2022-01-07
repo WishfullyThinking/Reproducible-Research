@@ -76,6 +76,8 @@ After replacing the NA values:
 - the  mean number of steps per day is about `r round(mean(smry2))`. 
 - the median number of steps per day is `r (median(smry2))`.
 
+Of course, the mean and median values increased after imputing the estimates to the NA values.
+
 
 ## Part 4: Weekday vs Weekend
 
